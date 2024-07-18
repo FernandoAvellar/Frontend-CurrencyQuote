@@ -17,7 +17,7 @@ export default function Header() {
 
     return (
         <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-            <h1 className="text-xl">Currency App</h1>
+            <h1 className="text-xl hidden md:flex">Currency App</h1>
             <div className="flex items-center">
                 <Link className='p-2' href="/home">Home</Link>
                 <Link className='p-2' href="/settings">Settings</Link>
@@ -33,10 +33,10 @@ export default function Header() {
                     </div>
                 ) : (
                     <div className="flex p-4">
-                        <button onClick={handleLoginClick} className="bg-green-500 px-4 py-2 rounded mr-2">
+                        <button onClick={handleLoginClick} className="bg-green-500 px-2 py-2 rounded mr-2">
                             Login
                         </button>
-                        <button onClick={handleRegisterClick} className="bg-blue-500 px-4 py-2 rounded">
+                        <button onClick={handleRegisterClick} className="bg-blue-500 px-2 py-2 rounded">
                             Register
                         </button>
                     </div>
