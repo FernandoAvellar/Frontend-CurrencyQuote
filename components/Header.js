@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation';
 
@@ -16,7 +17,12 @@ export default function Header() {
 
     return (
         <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-            <h1 className="text-xl">My Currency App</h1>
+            <h1 className="text-xl">Currency App</h1>
+            <div className="flex items-center">
+                <Link className='p-2' href="/home">Home</Link>
+                <Link className='p-2' href="/settings">Settings</Link>
+                <Link className="p-2" href="/historical">Historical</Link>
+            </div>
             <div>
                 {user ? (
                     <div className="flex items-center p-4">

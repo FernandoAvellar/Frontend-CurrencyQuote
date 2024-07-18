@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const handleRegister = async () => {
         try {
@@ -12,8 +14,8 @@ export default function Register() {
                 "username": username,
                 "password": password
             });
-            alert('User registered successfully!');
             router.push('/auth/login');
+            alert('User registered successfully!');
         } catch (error) {
             alert('Registration failed!');
         }
