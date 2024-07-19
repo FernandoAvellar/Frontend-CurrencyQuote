@@ -23,7 +23,7 @@ export default function Register() {
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded shadow-md w-96">
+            <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Register</h2>
                 <input
                     type="text"
@@ -39,7 +39,7 @@ export default function Register() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="mb-4 p-2 w-full border"
                 />
-                <button onClick={handleRegister} className="bg-blue-500 text-white px-4 py-2 rounded">
+                <button onClick={handleRegister} className="bg-blue-500 text-white px-4 py-2 rounded w-full">
                     Register
                 </button>
             </div>

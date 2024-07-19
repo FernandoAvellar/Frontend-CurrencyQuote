@@ -25,7 +25,7 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded shadow-md w-96">
+            <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Login</h2>
                 <input
                     type="text"
@@ -41,7 +41,7 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="mb-4 p-2 w-full border"
                 />
-                <button onClick={handleLogin} className="bg-green-500 text-white px-4 py-2 rounded">
+                <button onClick={handleLogin} className="bg-green-500 text-white px-4 py-2 rounded w-full">
                     Login
                 </button>
             </div>
