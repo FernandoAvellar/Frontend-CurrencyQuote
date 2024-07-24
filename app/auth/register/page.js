@@ -22,7 +22,7 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <main className="min-h-[75vh] flex items-center justify-center">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Register</h2>
                 <input
@@ -43,6 +43,6 @@ export default function Register() {
                     Register
                 </button>
             </div>
-        </div>
+        </main>
     );
 }

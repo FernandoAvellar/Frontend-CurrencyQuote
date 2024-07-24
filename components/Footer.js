@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <footer className="bg-gray-800 text-white shadow p-4 sm:flex sm:items-center sm:justify-between sm:p-6 xl:p-8">
+        <footer className="min-h-fit bg-gray-800 text-white shadow p-4 sm:flex sm:items-center sm:justify-between sm:p-6">
             <p className="mb-4 text-sm text-center sm:mb-0">
                 &copy; 2024 Currency App. All rights reserved.
             </p>

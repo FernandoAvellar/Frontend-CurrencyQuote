@@ -117,9 +117,9 @@ export default function Historical() {
     }
 
     return (
-        <div className="text-white min-h-screen bg-sky-900 p-4">
-            <h1 className="text-2xl font-bold mb-4">Historical Currency Rates</h1>
-            <div className="mb-4">
+        <main className="text-white min-h-[75vh] bg-sky-900 p-4">
+            <h1 className="text-2xl font-bold mb-2">Historical Currency Rates</h1>
+            <div className="mb-2">
                 <label className="block mb-2">Select Currency:</label>
                 <select
                     value={currency}
@@ -133,20 +133,20 @@ export default function Historical() {
                     ))}
                 </select>
             </div>
-            <div className="mb-4">
+            <div className="mb-2">
                 <label className="block mb-2">Number of Days:</label>
                 <input
                     type="number"
                     value={days}
                     onChange={handleDaysChange}
-                    className="border rounded p-2 text-black"
+                    className="border rounded p-2 text-black mb-2"
                     min="1"
                     max="360"
                 />
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm" style={{ height: '500px' }}>
+            <div className="bg-white p-4 rounded-lg shadow-sm" style={{ height: '360px' }}>
                 <Line data={data} options={options} />
             </div>
-        </div>
+        </main>
     );
 }

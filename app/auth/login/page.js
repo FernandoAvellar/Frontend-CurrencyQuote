@@ -24,7 +24,7 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <main className="flex items-center justify-center min-h-[75vh]">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Login</h2>
                 <input
@@ -45,6 +45,6 @@ export default function Login() {
                     Login
                 </button>
             </div>
-        </div>
+        </main>
     );
 }

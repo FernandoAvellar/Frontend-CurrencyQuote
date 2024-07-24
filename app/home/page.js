@@ -51,13 +51,13 @@ export default function Home() {
     }
 
     return (
-        <div className="text-white min-h-screen p-4">
-            <h1 className="text-2xl font-bold mb-4">Currency Rates</h1>
+        <main className="text-white min-h-[75vh] p-4">
+            <h1 className="text-gray-800 text-xl font-bold mb-4">Currency Rates</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {selectedCurrencies.map(pair => (
                     <Card key={pair} currency={pair} rate={rates[pair]} />
                 ))}
             </div>
-        </div>
+        </main>
     );
 }

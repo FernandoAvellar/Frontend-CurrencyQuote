@@ -1,8 +1,9 @@
 'use client';
+import Home from './home/page.js'
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
@@ -13,8 +14,8 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-3xl">Hello World</h1>
-    </div>
+    <>
+      <Home />
+    </>
   );
 }

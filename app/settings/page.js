@@ -53,8 +53,8 @@ export default function Settings() {
     }
 
     return (
-        <div className="text-white min-h-screen p-4">
-            <h1 className="text-2xl font-bold mb-4">Settings</h1>
+        <main className="text-white min-h-[75vh] p-4">
+            <h1 className="text-gray-800 text-xl font-bold mb-4">Settings</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {currencies.map((currency) => (
                     <div key={currency.code} className="p-4 border rounded-lg shadow-lg bg-sky-800">
@@ -69,6 +69,6 @@ export default function Settings() {
                     </div>
                 ))}
             </div>
-        </div>
+        </main>
     );
 }
