@@ -18,20 +18,25 @@ export default function Home() {
             return;
         }
 
-        const token = localStorage.getItem('accessToken');
-        const storedSelectedCurrencies = JSON.parse(localStorage.getItem('selectedCurrencies')) || [];
-        setSelectedCurrencies(storedSelectedCurrencies);
-
-        const fetchRates = async () => {
-            const newRates = {};
+        const fetchFavoritesAndRates = async () => {
             try {
-                for (const pair of storedSelectedCurrencies) {
-                    const response = await axios.get(`http://localhost:8080/currency/rate/${pair}`, {
+                const token = localStorage.getItem('accessToken');
+                const favoritesResponse = await axios.get('http://localhost:8080/users/favorites', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                const favorites = favoritesResponse.data.map(currency => currency.code);
+                setSelectedCurrencies(favorites);
+
+                const newRates = {};
+                for (const code of favorites) {
+                    const response = await axios.get(`http://localhost:8080/currency/rate/${code}`, {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
                     });
-                    newRates[pair] = response.data;
+                    newRates[code] = response.data;
                 }
                 setRates(newRates);
             } catch (error) {
@@ -40,9 +45,8 @@ export default function Home() {
                 setLoading(false);
             }
         };
-
-        fetchRates();
-        const interval = setInterval(fetchRates, 30000); // Atualiza a cada 30 segundos
+        fetchFavoritesAndRates();
+        const interval = setInterval(fetchFavoritesAndRates, 30000); // Atualiza a cada 30 segundos
         return () => clearInterval(interval);
     }, [user, router]);
 
@@ -54,8 +58,8 @@ export default function Home() {
         <main className="text-white min-h-[75vh] p-4">
             <h1 className="text-gray-800 text-xl font-bold mb-4">Currency Rates</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {selectedCurrencies.map(pair => (
-                    <Card key={pair} currency={pair} rate={rates[pair]} />
+                {selectedCurrencies.map(code => (
+                    <Card key={code} currency={code} rate={rates[code]} />
                 ))}
             </div>
         </main>

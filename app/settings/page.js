@@ -10,6 +10,7 @@ export default function Settings() {
     const [currencies, setCurrencies] = useState([]);
     const [selectedCurrencies, setSelectedCurrencies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -26,17 +27,21 @@ export default function Settings() {
                     }
                 });
                 setCurrencies(response.data);
+
+                const favoritesResponse = await axios.get('http://localhost:8080/users/favorites', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                const favorites = favoritesResponse.data.map(currency => currency.code);
+                setSelectedCurrencies(favorites);
             } catch (error) {
                 console.error('Failed to fetch currencies', error);
             } finally {
                 setLoading(false);
             }
         };
-
         fetchCurrencies();
-
-        const storedSelectedCurrencies = JSON.parse(localStorage.getItem('selectedCurrencies')) || [];
-        setSelectedCurrencies(storedSelectedCurrencies);
     }, [user, router]);
 
     const handleSelectionChange = (code) => {
@@ -45,7 +50,24 @@ export default function Settings() {
             : [...selectedCurrencies, code];
 
         setSelectedCurrencies(updatedSelection);
-        localStorage.setItem('selectedCurrencies', JSON.stringify(updatedSelection));
+    };
+
+    const handleUpdateClick = async () => {
+        setIsUpdating(true);
+        try {
+            const token = localStorage.getItem('accessToken');
+            await axios.post('http://localhost:8080/users/favorites', selectedCurrencies, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+        } catch (error) {
+            console.error('Failed to update favorite currencies', error);
+            alert('Failure at update user settings!');
+        } finally {
+            setIsUpdating(false);
+            alert('User settings updated!');
+        }
     };
 
     if (loading) {
@@ -69,6 +91,13 @@ export default function Settings() {
                     </div>
                 ))}
             </div>
+            <button
+                onClick={handleUpdateClick}
+                disabled={isUpdating}
+                className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 disabled:opacity-50"
+            >
+                {isUpdating ? 'Updating...' : 'Update'}
+            </button>
         </main>
     );
 }
