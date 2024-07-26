@@ -51,7 +51,8 @@ export default function Historical() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setCurrencies(response.data);
+                const sortedCurrencies = response.data.sort((a, b) => a.name.localeCompare(b.name));
+                setCurrencies(sortedCurrencies);
             } catch (error) {
                 console.error('Failed to fetch currencies', error);
             }
