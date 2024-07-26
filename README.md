@@ -1,11 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welcome to My Currency Conversion App (Frontend)
 
-## Getting Started
+The idea of this project was to implement a frontend in NextJs/React in order to consume a backend created to allow us to fetch currency conversion in real time.
 
-First, run the development server:
+> **Note:** The possible conversions are only to the currency **Brazilian Real (BRL).**
 
-```bash
-npm run dev
+To test the project, follow the steps below:
 
+- Run *git clone*
+- Navigate to the *cloned-directory*
+- Run command: *npm install*
+- Run command: **npm run dev*
+- Navigate to the URL: http://localhost:3000
+- Create a new user using the button **Register**
+- Login using the create user.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**For this project works you need before to have the backend below running.**
+
+Repositorie:  [CurrencyQuote](https://github.com/FernandoAvellar/CurrencyQuote)
