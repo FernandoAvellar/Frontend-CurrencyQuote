@@ -94,7 +94,7 @@ export default function Settings() {
             <button
                 onClick={handleUpdateClick}
                 disabled={isUpdating}
-                className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 disabled:opacity-50"
+                className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 disabled:opacity-50 min-w-full"
             >
                 {isUpdating ? 'Updating...' : 'Update'}
             </button>

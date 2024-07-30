@@ -57,7 +57,7 @@ export default function Home() {
     return (
         <main className="text-white min-h-[75vh] p-4">
             <h1 className="text-gray-800 text-xl font-bold mb-4">Currency Rates</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
                 {selectedCurrencies.map(code => (
                     <Card key={code} currency={code} rate={rates[code]} />
                 ))}

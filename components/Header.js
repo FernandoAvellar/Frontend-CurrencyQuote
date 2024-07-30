@@ -16,7 +16,7 @@ export default function Header() {
     }
 
     return (
-        <header className="min-h-fit bg-gray-800 text-white p-2 flex justify-between items-center">
+        <header className="min-h-fit bg-gray-800 text-white p-4 flex justify-between items-center sm:p-6">
             <h1 className="text-xl hidden md:flex">Currency App</h1>
             <div className="flex items-center">
                 <Link className='p-2' href="/home">Home</Link>
