@@ -41,9 +41,7 @@ export default function Historical() {
             router.push('/auth/login');
             return;
         }
-
         const token = localStorage.getItem('accessToken');
-
         const fetchCurrencies = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/currency', {
@@ -57,7 +55,6 @@ export default function Historical() {
                 console.error('Failed to fetch currencies', error);
             }
         };
-
         fetchCurrencies();
     }, [user, router]);
 
@@ -79,7 +76,6 @@ export default function Historical() {
                 setLoading(false);
             }
         };
-
         fetchHistoricalData();
     }, [currency, debounce]);
 

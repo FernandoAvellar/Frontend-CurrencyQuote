@@ -17,7 +17,6 @@ export default function Settings() {
             router.push('/auth/login');
             return;
         }
-
         const fetchCurrencies = async () => {
             try {
                 const token = localStorage.getItem('accessToken');
@@ -48,7 +47,6 @@ export default function Settings() {
         const updatedSelection = selectedCurrencies.includes(code)
             ? selectedCurrencies.filter((currency) => currency !== code)
             : [...selectedCurrencies, code];
-
         setSelectedCurrencies(updatedSelection);
     };
 

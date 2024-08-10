@@ -17,10 +17,10 @@ export default function Home() {
             router.push('/auth/login');
             return;
         }
-
         const fetchFavoritesAndRates = async () => {
             try {
                 const token = localStorage.getItem('accessToken');
+
                 const favoritesResponse = await axios.get('http://localhost:8080/users/favorites', {
                     headers: {
                         Authorization: `Bearer ${token}`
