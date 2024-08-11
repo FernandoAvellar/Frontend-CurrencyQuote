@@ -23,6 +23,10 @@ export default function Login() {
         }
     };
 
+    function handleChangePassword() {
+        router.push('/auth/changepassword');
+    }
+
     return (
         <main className="flex items-center justify-center min-h-[75vh]">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
@@ -41,8 +45,11 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="mb-4 p-2 w-full border"
                 />
-                <button onClick={handleLogin} className="bg-green-500 text-white px-4 py-2 rounded w-full">
+                <button onClick={handleLogin} className="bg-green-500 text-white px-4 py-2 rounded w-full mb-2">
                     Login
+                </button>
+                <button onClick={handleChangePassword} className="bg-purple-500 text-white px-4 py-2 rounded w-full">
+                    Change password
                 </button>
             </div>
         </main>
