@@ -17,9 +17,9 @@ export default function ChangePassword() {
                 "newPassword": newPassword
             });
             router.push('/auth/login');
-            alert('Password changed successfully!');
+            toast.success('Password changed successfully!');
         } catch (error) {
-            alert('Password change failed!');
+            toast.error('Password change failed!');
         }
     };
 

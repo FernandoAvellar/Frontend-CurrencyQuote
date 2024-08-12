@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2'
 
 export default function Admin() {
     const { user } = useAuth();
@@ -46,21 +48,55 @@ export default function Admin() {
 
     const handleDelete = async (username) => {
         const token = localStorage.getItem('accessToken');
-        try {
-            await axios.delete(`http://localhost:8080/users/${username}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete user!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`http://localhost:8080/users/${username}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    setUsers(users.filter(user => user.username !== username));
+
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "The user has been deleted.",
+                        icon: "success"
+                    });
+                } catch (error) {
+                    console.error('Failed to delete user', error);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to delete user.",
+                        icon: "error"
+                    });
                 }
-            });
-            setUsers(users.filter(user => user.username !== username));
-        } catch (error) {
-            console.error('Failed to delete user', error);
-        }
+            }
+        });
     };
 
     const handleChangePassword = async (username) => {
         const token = localStorage.getItem('accessToken');
-        const newPassword = prompt("Enter new password:");
+        const { value: newPassword } = await Swal.fire({
+            title: "Enter new password",
+            input: "password",
+            inputLabel: "New Password",
+            inputPlaceholder: "Enter new password",
+            inputAttributes: {
+                maxlength: "25",
+                autocapitalize: "off",
+                autocorrect: "off"
+            }
+        });
         if (!newPassword) return;
         try {
             await axios.put(`http://localhost:8080/users/${username}/password/change`,
@@ -70,8 +106,9 @@ export default function Admin() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-            alert('Password changed successfully');
+            toast.success('Password changed successfully');
         } catch (error) {
+            toast.error('Failed to change password');
             console.error('Failed to change password', error);
         }
     };
@@ -82,7 +119,7 @@ export default function Admin() {
             .filter(role => roleSelections[username][role]);
 
         if (selectedRoles.length === 0) {
-            alert('User must have at least one role selected.');
+            toast.info('Select at least one role');
             return;
         }
         try {
@@ -94,9 +131,10 @@ export default function Admin() {
                     Authorization: `Bearer ${token}`
                 }
             });
-            alert('Roles updated successfully');
+            toast.success('Roles updated successfully');
         } catch (error) {
-            console.error('Failed to update roles', error);
+            toast.error('Failed to update roles');
+            console.log('Failed to update roles', error);
         }
     };
 

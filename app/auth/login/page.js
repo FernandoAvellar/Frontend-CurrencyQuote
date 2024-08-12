@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'react-toastify';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ export default function Login() {
             login(response.data.accessToken, { username });
             router.push('/home');
         } catch (error) {
-            alert('Login failed!');
+            toast.error('Login failed!');
         }
     };
 

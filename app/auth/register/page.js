@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -15,9 +16,9 @@ export default function Register() {
                 "password": password
             });
             router.push('/auth/login');
-            alert('User registered successfully!');
+            toast.success('User registered successfully!');
         } catch (error) {
-            alert('Registration failed!');
+            toast.error('Registration failed!');
         }
     };
 

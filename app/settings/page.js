@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'react-toastify';
 
 export default function Settings() {
     const { user } = useAuth();
@@ -61,10 +62,10 @@ export default function Settings() {
             });
         } catch (error) {
             console.error('Failed to update favorite currencies', error);
-            alert('Failure at update user settings!');
+            toast.error('Failure at update user settings!');
         } finally {
             setIsUpdating(false);
-            alert('User settings updated!');
+            toast.success('User settings updated!');
         }
     };
 
