@@ -9,6 +9,7 @@ export default function Admin() {
     const router = useRouter();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [roleSelections, setRoleSelections] = useState({});
 
     useEffect(() => {
         if (!user) {
@@ -23,7 +24,17 @@ export default function Admin() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setUsers(response.data);
+                const fetchedUsers = response.data;
+                setUsers(fetchedUsers);
+
+                const initialRoleSelections = {};
+                fetchedUsers.forEach(u => {
+                    initialRoleSelections[u.username] = {
+                        ROLE_BASIC: u.roles.some(role => role.name === 'ROLE_BASIC'),
+                        ROLE_ADMIN: u.roles.some(role => role.name === 'ROLE_ADMIN')
+                    };
+                });
+                setRoleSelections(initialRoleSelections);
             } catch (error) {
                 console.error('Failed to fetch users', error);
             } finally {
@@ -41,7 +52,6 @@ export default function Admin() {
                     Authorization: `Bearer ${token}`
                 }
             });
-            // Refresh the user list after deletion
             setUsers(users.filter(user => user.username !== username));
         } catch (error) {
             console.error('Failed to delete user', error);
@@ -52,7 +62,6 @@ export default function Admin() {
         const token = localStorage.getItem('accessToken');
         const newPassword = prompt("Enter new password:");
         if (!newPassword) return;
-
         try {
             await axios.put(`http://localhost:8080/users/${username}/password/change`,
                 { newPassword: newPassword },
@@ -67,6 +76,40 @@ export default function Admin() {
         }
     };
 
+    const handleUpdateRoles = async (username) => {
+        const token = localStorage.getItem('accessToken');
+        const selectedRoles = Object.keys(roleSelections[username])
+            .filter(role => roleSelections[username][role]);
+
+        if (selectedRoles.length === 0) {
+            alert('User must have at least one role selected.');
+            return;
+        }
+        try {
+            await axios.put(`http://localhost:8080/users/updateuserroles`, {
+                username: username,
+                roles: selectedRoles
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            alert('Roles updated successfully');
+        } catch (error) {
+            console.error('Failed to update roles', error);
+        }
+    };
+
+    const handleRoleChange = (username, role) => {
+        setRoleSelections(prev => ({
+            ...prev,
+            [username]: {
+                ...prev[username],
+                [role]: !prev[username][role]
+            }
+        }));
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -78,7 +121,7 @@ export default function Admin() {
                 <thead>
                     <tr>
                         <th className="py-2 px-4 border-b">Username</th>
-                        <th className="py-2 px-4 border-b">User Role</th>
+                        <th className="py-2 px-4 border-b">User Role(s)</th>
                         <th className="py-2 px-4 border-b">Actions</th>
                     </tr>
                 </thead>
@@ -87,20 +130,45 @@ export default function Admin() {
                         <tr key={user.id}>
                             <td className="py-2 px-4 border-b uppercase">{user.username}</td>
                             <td className="py-2 px-4 border-b">
-                                {user.roles.map(role => role.name).join(', ')}
+                                <div className="flex justify-center">
+                                    <label className="mr-4">
+                                        <input
+                                            className='m-1'
+                                            type="checkbox"
+                                            checked={roleSelections[user.username]?.ROLE_BASIC || false}
+                                            onChange={() => handleRoleChange(user.username, 'ROLE_BASIC')}
+                                        />
+                                        ROLE_BASIC
+                                    </label>
+                                    <label>
+                                        <input
+                                            className='m-1'
+                                            type="checkbox"
+                                            checked={roleSelections[user.username]?.ROLE_ADMIN || false}
+                                            onChange={() => handleRoleChange(user.username, 'ROLE_ADMIN')}
+                                        />
+                                        ROLE_ADMIN
+                                    </label>
+                                </div>
                             </td>
                             <td className="py-2 px-4 border-b">
                                 <button
-                                    onClick={() => handleDelete(user.username)}
-                                    className="bg-red-500 text-white px-2 py-1 rounded m-2"
-                                >
-                                    Delete
-                                </button>
-                                <button
                                     onClick={() => handleChangePassword(user.username)}
-                                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                                    className="bg-blue-500 text-white px-2 py-1 rounded m-1"
                                 >
                                     Change Password
+                                </button>
+                                <button
+                                    onClick={() => handleUpdateRoles(user.username)}
+                                    className="bg-green-500 text-white px-2 py-1 rounded m-1"
+                                >
+                                    Update Roles
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(user.username)}
+                                    className="bg-red-500 text-white px-2 py-1 rounded m-1"
+                                >
+                                    Delete User
                                 </button>
                             </td>
                         </tr>
