@@ -26,23 +26,30 @@ export default function Register() {
         <main className="min-h-[75vh] flex items-center justify-center">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Register</h2>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <button onClick={handleRegister} className="bg-blue-500 text-white px-4 py-2 rounded w-full">
-                    Register
-                </button>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleRegister();
+                }}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="username"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="current-password"
+                    />
+                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">
+                        Register
+                    </button>
+                </form>
             </div>
         </main>
     );

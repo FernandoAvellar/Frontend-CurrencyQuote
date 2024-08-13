@@ -14,6 +14,7 @@ To test the project, follow the steps below:
 - Create a new user using the button **Register**
 - Login using the create user.
 
+**There is an initial admin user in order to allow complete software validations check (User: admin / Password: 123)**
 **For this project works you need before to have the backend below running.**
 
 Repositorie:  [CurrencyQuote](https://github.com/FernandoAvellar/CurrencyQuote)

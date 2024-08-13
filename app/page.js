@@ -7,9 +7,11 @@ export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
       router.push('/auth/login');
+    } else {
+      router.push('/home');
     }
   }, [router]);
 

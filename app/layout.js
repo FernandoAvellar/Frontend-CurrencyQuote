@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} flex flex-col`}>
         <AuthProvider>
           <Header />
-          <ToastContainer position="top-center" autoClose={3000} theme="colored" />
+          <ToastContainer position="top-center" autoClose={2000} theme="colored" />
           {children}
           <Footer />
         </AuthProvider>

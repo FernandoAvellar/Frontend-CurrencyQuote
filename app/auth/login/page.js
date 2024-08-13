@@ -17,10 +17,10 @@ export default function Login() {
                 "username": username,
                 "password": password
             });
-            login(response.data.accessToken, { username });
+            login(response.data.accessToken, response.data.refreshToken, { username });
             router.push('/home');
         } catch (error) {
-            toast.error('Login failed!');
+            toast.error('Login failed. Verify username/password');
         }
     };
 
@@ -32,23 +32,30 @@ export default function Login() {
         <main className="flex items-center justify-center min-h-[75vh]">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Login</h2>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <button onClick={handleLogin} className="bg-green-500 text-white px-4 py-2 rounded w-full mb-2">
-                    Login
-                </button>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleLogin();
+                }}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="username"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="current-password"
+                    />
+                    <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full mb-2">
+                        Login
+                    </button>
+                </form>
                 <button onClick={handleChangePassword} className="bg-purple-500 text-white px-4 py-2 rounded w-full">
                     Change password
                 </button>

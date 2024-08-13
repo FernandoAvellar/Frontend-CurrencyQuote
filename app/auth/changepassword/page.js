@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function ChangePassword() {
     const [username, setUsername] = useState('');
@@ -27,31 +28,39 @@ export default function ChangePassword() {
         <main className="min-h-[75vh] flex items-center justify-center">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Change password</h2>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <input
-                    type="password"
-                    placeholder="Actual password"
-                    value={actualPassword}
-                    onChange={(e) => setActualPassword(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <input
-                    type="password"
-                    placeholder="New password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="mb-4 p-2 w-full border"
-                />
-                <button onClick={handleChangePassword} className="bg-purple-500 text-white px-4 py-2 rounded w-full">
-                    Change password
-                </button>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleChangePassword();
+                }}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="username"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Actual password"
+                        value={actualPassword}
+                        onChange={(e) => setActualPassword(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="current-password"
+                    />
+                    <input
+                        type="password"
+                        placeholder="New password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="mb-4 p-2 w-full border"
+                        autoComplete="current-password"
+                    />
+                    <button type="submit" className="bg-purple-500 text-white px-4 py-2 rounded w-full">
+                        Change password
+                    </button>
+                </form>
             </div>
-        </main>
+        </main >
     );
 }
