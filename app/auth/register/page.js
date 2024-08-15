@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import axios from 'axios';
+import api from '@/app/api/api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
@@ -9,9 +9,10 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    const handleRegister = async () => {
+    const handleRegister = async (event) => {
+        event.preventDefault();
         try {
-            await axios.post('http://localhost:8080/users/register', {
+            await api.post('/users/register', {
                 "username": username,
                 "password": password
             });
@@ -26,10 +27,7 @@ export default function Register() {
         <main className="min-h-[75vh] flex items-center justify-center">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Register</h2>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleRegister();
-                }}>
+                <form onSubmit={handleRegister}>
                     <input
                         type="text"
                         placeholder="Username"
@@ -37,6 +35,7 @@ export default function Register() {
                         onChange={(e) => setUsername(e.target.value)}
                         className="mb-4 p-2 w-full border"
                         autoComplete="username"
+                        required
                     />
                     <input
                         type="password"
@@ -45,6 +44,7 @@ export default function Register() {
                         onChange={(e) => setPassword(e.target.value)}
                         className="mb-4 p-2 w-full border"
                         autoComplete="current-password"
+                        required
                     />
                     <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">
                         Register

@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import api, { setupInterceptors } from '@/app/api/api';
 
 const AuthContext = createContext();
 
@@ -10,35 +10,17 @@ export function AuthProvider({ children }) {
     const router = useRouter();
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        if (accessToken) {
-            validateTokenAndFetchUser();
-        }
+        setupInterceptors(logout);
+        fetchUserDetails();
     }, []);
 
-    const validateTokenAndFetchUser = async () => {
+    const fetchUserDetails = async () => {
         try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.get('http://localhost:8080/auth/me', {
-                headers: { Authorization: `Bearer ${accessToken}` },
-            });
+            const response = await api.get('/auth/me');
             setUser(response.data);
             router.push('/home');
         } catch (error) {
-            console.error('Failed to fetch user data, attempting to refresh token', error);
-            refreshToken();
-        }
-    };
-
-    const refreshToken = async () => {
-        const refreshToken = localStorage.getItem('refreshToken');
-        try {
-            const response = await axios.post('http://localhost:8080/auth/refresh', { refreshToken });
-            const { accessToken } = response.data;
-            localStorage.setItem('accessToken', accessToken);
-            validateTokenAndFetchUser(); // Re-fetch user data with the new accessToken
-        } catch (error) {
-            console.error('Failed to refresh token, user must login again', error);
+            console.error('Not possible to get user detail or invalid session');
             logout();
         }
     };
@@ -53,6 +35,7 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         setUser(null);
+        router.push('/auth/login');
     };
 
     return (

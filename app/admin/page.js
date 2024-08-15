@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import api from '@/app/api/api';
 
 export default function Admin() {
     const { user } = useAuth();
@@ -19,13 +19,8 @@ export default function Admin() {
             return;
         }
         const fetchUsers = async () => {
-            const token = localStorage.getItem('accessToken');
             try {
-                const response = await axios.get('http://localhost:8080/users', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get('/users');
                 const fetchedUsers = response.data;
                 setUsers(fetchedUsers);
 
@@ -38,7 +33,7 @@ export default function Admin() {
                 });
                 setRoleSelections(initialRoleSelections);
             } catch (error) {
-                console.error('Failed to fetch users', error);
+                console.error('Failed to fetch users');
             } finally {
                 setLoading(false);
             }
@@ -47,8 +42,6 @@ export default function Admin() {
     }, [user]);
 
     const handleDelete = async (username) => {
-        const token = localStorage.getItem('accessToken');
-
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -60,11 +53,7 @@ export default function Admin() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await axios.delete(`http://localhost:8080/users/${username}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
+                    await api.delete(`/users/${username}`);
                     setUsers(users.filter(user => user.username !== username));
 
                     Swal.fire({
@@ -73,7 +62,7 @@ export default function Admin() {
                         icon: "success"
                     });
                 } catch (error) {
-                    console.error('Failed to delete user', error);
+                    console.error('Failed to delete user');
                     Swal.fire({
                         title: "Error!",
                         text: "Failed to delete user.",
@@ -85,7 +74,6 @@ export default function Admin() {
     };
 
     const handleChangePassword = async (username) => {
-        const token = localStorage.getItem('accessToken');
         const { value: newPassword } = await Swal.fire({
             title: "Enter new password",
             input: "password",
@@ -99,22 +87,15 @@ export default function Admin() {
         });
         if (!newPassword) return;
         try {
-            await axios.put(`http://localhost:8080/users/${username}/password/change`,
-                { newPassword: newPassword },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+            await api.put(`/users/${username}/password/change`, { newPassword: newPassword });
             toast.success('Password changed successfully');
         } catch (error) {
             toast.error('Failed to change password');
-            console.error('Failed to change password', error);
+            console.error('Failed to change password');
         }
     };
 
     const handleUpdateRoles = async (username) => {
-        const token = localStorage.getItem('accessToken');
         const selectedRoles = Object.keys(roleSelections[username])
             .filter(role => roleSelections[username][role]);
 
@@ -123,18 +104,15 @@ export default function Admin() {
             return;
         }
         try {
-            await axios.put(`http://localhost:8080/users/updateuserroles`, {
+            await api.put(`/users/updateuserroles`, {
                 username: username,
                 roles: selectedRoles
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            },
+            );
             toast.success('Roles updated successfully');
         } catch (error) {
             toast.error('Failed to update roles');
-            console.log('Failed to update roles', error);
+            console.log('Failed to update roles');
         }
     };
 
@@ -152,6 +130,10 @@ export default function Admin() {
         return <div>Loading...</div>;
     }
 
+    if (!user) {
+        return <div>Redirecting...</div>;
+    }
+
     return (
         <main className="min-h-[75vh] bg-gray-100 p-4">
             <h1 className="text-2xl font-bold mb-4">User Administration</h1>
@@ -164,17 +146,17 @@ export default function Admin() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
-                        <tr key={user.id}>
-                            <td className="py-2 px-4 border-b uppercase">{user.username}</td>
+                    {users.map(u => (
+                        <tr key={u.id}>
+                            <td className="py-2 px-4 border-b uppercase">{u.username}</td>
                             <td className="py-2 px-4 border-b">
                                 <div className="flex justify-center">
                                     <label className="mr-4">
                                         <input
                                             className='m-1'
                                             type="checkbox"
-                                            checked={roleSelections[user.username]?.ROLE_BASIC || false}
-                                            onChange={() => handleRoleChange(user.username, 'ROLE_BASIC')}
+                                            checked={roleSelections[u.username]?.ROLE_BASIC || false}
+                                            onChange={() => handleRoleChange(u.username, 'ROLE_BASIC')}
                                         />
                                         ROLE_BASIC
                                     </label>
@@ -182,8 +164,8 @@ export default function Admin() {
                                         <input
                                             className='m-1'
                                             type="checkbox"
-                                            checked={roleSelections[user.username]?.ROLE_ADMIN || false}
-                                            onChange={() => handleRoleChange(user.username, 'ROLE_ADMIN')}
+                                            checked={roleSelections[u.username]?.ROLE_ADMIN || false}
+                                            onChange={() => handleRoleChange(u.username, 'ROLE_ADMIN')}
                                         />
                                         ROLE_ADMIN
                                     </label>
@@ -191,20 +173,21 @@ export default function Admin() {
                             </td>
                             <td className="py-2 px-4 border-b">
                                 <button
-                                    onClick={() => handleChangePassword(user.username)}
+                                    onClick={() => handleChangePassword(u.username)}
                                     className="bg-blue-500 text-white px-2 py-1 rounded m-1"
                                 >
                                     Change Password
                                 </button>
                                 <button
-                                    onClick={() => handleUpdateRoles(user.username)}
+                                    onClick={() => handleUpdateRoles(u.username)}
                                     className="bg-green-500 text-white px-2 py-1 rounded m-1"
                                 >
                                     Update Roles
                                 </button>
                                 <button
-                                    onClick={() => handleDelete(user.username)}
-                                    className="bg-red-500 text-white px-2 py-1 rounded m-1"
+                                    onClick={() => handleDelete(u.username)}
+                                    className="bg-red-500 text-white px-2 py-1 rounded m-1 disabled:opacity-55"
+                                    disabled={u.username === user.username}
                                 >
                                     Delete User
                                 </button>

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import api from '@/app/api/api';
 import { useAuth } from '@/context/AuthContext';
 import useDebounce from '@/hooks/useDebounce';
 import { Line } from 'react-chartjs-2';
@@ -41,18 +41,13 @@ export default function Historical() {
             router.push('/auth/login');
             return;
         }
-        const token = localStorage.getItem('accessToken');
         const fetchCurrencies = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/currency', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get('/currency');
                 const sortedCurrencies = response.data.sort((a, b) => a.name.localeCompare(b.name));
                 setCurrencies(sortedCurrencies);
             } catch (error) {
-                console.error('Failed to fetch currencies', error);
+                console.error('Failed to fetch currencies');
             }
         };
         fetchCurrencies();
@@ -62,16 +57,11 @@ export default function Historical() {
         const fetchHistoricalData = async () => {
             if (!debounce || debounce < 1 || debounce > 360) return;
             setLoading(true);
-            const token = localStorage.getItem('accessToken');
             try {
-                const response = await axios.get(`http://localhost:8080/currency/historical/${currency}/${debounce}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get(`/currency/historical/${currency}/${debounce}`);
                 setHistoricalData(response.data);
             } catch (error) {
-                console.error('Failed to fetch historical data', error);
+                console.error('Failed to fetch historical data');
             } finally {
                 setLoading(false);
             }

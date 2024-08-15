@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import Card from '@/components/Card';
+import api from '@/app/api/api';
 
 export default function Home() {
     const router = useRouter();
@@ -19,28 +19,18 @@ export default function Home() {
         }
         const fetchFavoritesAndRates = async () => {
             try {
-                const token = localStorage.getItem('accessToken');
-
-                const favoritesResponse = await axios.get('http://localhost:8080/users/favorites', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const favoritesResponse = await api.get('/users/favorites');
                 const favorites = favoritesResponse.data.map(currency => currency.code);
                 setSelectedCurrencies(favorites);
 
                 const newRates = {};
                 for (const code of favorites) {
-                    const response = await axios.get(`http://localhost:8080/currency/rate/${code}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
+                    const response = await api.get(`/currency/rate/${code}`);
                     newRates[code] = response.data;
                 }
                 setRates(newRates);
             } catch (error) {
-                console.error('Failed to fetch rates', error);
+                console.error('Failed to fetch rates');
             } finally {
                 setLoading(false);
             }

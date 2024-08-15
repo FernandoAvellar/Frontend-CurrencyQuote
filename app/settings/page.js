@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
+import api from '@/app/api/api';
 
 export default function Settings() {
     const { user } = useAuth();
@@ -20,23 +20,14 @@ export default function Settings() {
         }
         const fetchCurrencies = async () => {
             try {
-                const token = localStorage.getItem('accessToken');
-                const response = await axios.get('http://localhost:8080/currency', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get('/currency');
                 setCurrencies(response.data);
 
-                const favoritesResponse = await axios.get('http://localhost:8080/users/favorites', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const favoritesResponse = await api.get('/users/favorites');
                 const favorites = favoritesResponse.data.map(currency => currency.code);
                 setSelectedCurrencies(favorites);
             } catch (error) {
-                console.error('Failed to fetch currencies', error);
+                console.error('Failed to fetch currencies');
             } finally {
                 setLoading(false);
             }
@@ -54,19 +45,13 @@ export default function Settings() {
     const handleUpdateClick = async () => {
         setIsUpdating(true);
         try {
-            const token = localStorage.getItem('accessToken');
-            await axios.post('http://localhost:8080/users/favorites', selectedCurrencies, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            await api.post('/users/favorites', selectedCurrencies);
         } catch (error) {
-            console.error('Failed to update favorite currencies', error);
-            toast.error('Failure at update user settings!');
-        } finally {
-            setIsUpdating(false);
-            toast.success('User settings updated!');
+            console.error('Failed to update favorite currencies');
+            toast.error('Failure at update user settings');
         }
+        setIsUpdating(false);
+        toast.success('User settings updated');
     };
 
     if (loading) {
