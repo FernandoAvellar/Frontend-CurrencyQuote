@@ -1,9 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link'
+import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import api from '@/app/api/api';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 export default function Header() {
     const router = useRouter();
@@ -14,13 +24,8 @@ export default function Header() {
         const fetchUserRole = async () => {
             if (!user) return;
 
-            const token = localStorage.getItem('accessToken');
             try {
-                const response = await axios.get('http://localhost:8080/auth/me', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get('/auth/me');
                 const userRoles = response.data.userRole;
                 const adminRole = userRoles.find(role => role.name === 'ROLE_ADMIN');
                 setIsAdmin(!!adminRole);
@@ -43,14 +48,33 @@ export default function Header() {
         <header className="min-h-fit bg-gray-800 text-white p-4 flex justify-between items-center sm:p-6">
             <h1 className="text-xl hidden md:flex">Currency App</h1>
             {user && (
-                <div className="flex items-center">
-                    <Link className='p-2' href="/home">Home</Link>
-                    <Link className='p-2' href="/settings">Settings</Link>
-                    <Link className="p-2" href="/historical">Historical</Link>
-                    {isAdmin && (
-                        <Link className="p-2" href="/admin">Admin</Link>
-                    )}
-                </div>
+                <nav className="flex items-center">
+                    <div className='hidden sm:flex'>
+                        <Link className='p-2' href="/home">Home</Link>
+                        <Link className='p-2' href="/settings">Settings</Link>
+                        <Link className="p-2" href="/historical">Historical</Link>
+                        {isAdmin && (
+                            <Link className="p-2" href="/admin">Admin</Link>
+                        )}
+                    </div>
+                    <div className='sm:hidden'>
+                        <DropdownMenu className='hidden'>
+                            <DropdownMenuTrigger>
+                                <Image
+                                    src="/burger-menu.svg"
+                                    width={30}
+                                    height={30}
+                                    alt="Picture of the author"
+                                />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem><Link href="/home">Home</Link></DropdownMenuItem>
+                                <DropdownMenuItem><Link href="/settings">Settings</Link></DropdownMenuItem>
+                                <DropdownMenuItem><Link href="/historical">Historical</Link></DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                </nav>
             )}
             <div>
                 {user ? (

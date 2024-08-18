@@ -55,7 +55,6 @@ export default function Admin() {
                 try {
                     await api.delete(`/users/${username}`);
                     setUsers(users.filter(user => user.username !== username));
-
                     Swal.fire({
                         title: "Deleted!",
                         text: "The user has been deleted.",
@@ -107,8 +106,7 @@ export default function Admin() {
             await api.put(`/users/updateuserroles`, {
                 username: username,
                 roles: selectedRoles
-            },
-            );
+            });
             toast.success('Roles updated successfully');
         } catch (error) {
             toast.error('Failed to update roles');

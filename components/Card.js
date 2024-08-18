@@ -1,7 +1,7 @@
 export default function Card({ currency, rate }) {
     return (
         <div className="border rounded-lg shadow-lg text-white bg-sky-800 max-w-md min-w-full">
-            <div className="rounded-lg h-16 p-1 mb-2 bg-gray-800 text-center place-content-center">
+            <div className="rounded-t-lg h-16 p-1 mb-2 bg-gray-800 text-center place-content-center">
                 <h2 className="text font-semibold">{currency} - {rate ? rate.currency.name : 'Loading...'}</h2>
             </div>
             <div>
@@ -15,7 +15,7 @@ export default function Card({ currency, rate }) {
                     </div>
                 )}
             </div>
-            <div className="rounded-lg h-10 bg-gray-800 text-center place-content-center">
+            <div className="rounded-b-lg h-10 bg-gray-800 text-center place-content-center">
                 <p>Last update: {rate ? new Date(rate.createDate).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' }) : 'Loading...'}</p>
             </div>
         </div>
