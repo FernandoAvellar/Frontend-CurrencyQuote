@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col`}>
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
         <AuthProvider>
           <Header />
           <ToastContainer position="top-center" autoClose={2000} theme="colored" />
