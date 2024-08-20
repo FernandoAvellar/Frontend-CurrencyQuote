@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Card from '@/components/Card';
 import api from '@/app/api/api';
-import { Container } from 'postcss';
 
 export default function Home() {
     const router = useRouter();

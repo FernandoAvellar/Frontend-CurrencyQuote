@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import api from '@/app/api/api';
+import { Loader2 } from 'lucide-react';
 
 export default function Settings() {
     const { user } = useAuth();
@@ -55,7 +56,11 @@ export default function Settings() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return
+        <>
+            <Loader2 size={20} className="animate-spin" /> &nbsp;
+            Loading...
+        </>
     }
 
     return (
@@ -78,9 +83,13 @@ export default function Settings() {
             <button
                 onClick={handleUpdateClick}
                 disabled={isUpdating}
-                className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 disabled:opacity-50 min-w-full"
+                className="flex items-center justify-center mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 disabled:opacity-50 min-w-full"
             >
-                {isUpdating ? 'Updating...' : 'Update'}
+                {isUpdating ? (
+                    <>
+                        <Loader2 size={20} className="animate-spin" /> &nbsp;Updating...
+                    </>
+                ) : 'Update'}
             </button>
         </main>
     );
