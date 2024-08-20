@@ -104,7 +104,7 @@ export default function Historical() {
     }
 
     return (
-        <main className="text-white min-h-[75vh] bg-sky-900 p-4">
+        <main className="flex flex-col flex-grow text-white bg-sky-900 p-4">
             <h1 className="text-2xl font-bold mb-2">Historical Currency Rates</h1>
             <div className="mb-2">
                 <label className="block mb-2">Select Currency:</label>

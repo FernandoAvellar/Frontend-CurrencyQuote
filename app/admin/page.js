@@ -133,7 +133,7 @@ export default function Admin() {
     }
 
     return (
-        <main className="min-h-[75vh] bg-gray-100 p-4">
+        <main className="flex flex-grow flex-col bg-gray-100 p-4">
             <h1 className="text-2xl font-bold mb-4">User Administration</h1>
             <table className="min-w-full bg-white text-center">
                 <thead>
@@ -169,7 +169,7 @@ export default function Admin() {
                                     </label>
                                 </div>
                             </td>
-                            <td className="py-2 px-4 border-b">
+                            <td className="flex flex-col lg:flex-row justify-center py-2 px-4 border-b">
                                 <button
                                     onClick={() => handleChangePassword(u.username)}
                                     className="bg-blue-500 text-white px-2 py-1 rounded m-1"

@@ -26,7 +26,7 @@ export default function ChangePassword() {
     };
 
     return (
-        <main className="min-h-[75vh] flex items-center justify-center">
+        <main className="flex flex-grow items-center justify-center">
             <div className="bg-stone-100 p-8 rounded shadow-md w-96">
                 <h2 className="text-2xl font-bold mb-6">Change password</h2>
                 <form onSubmit={handleChangePassword}>
