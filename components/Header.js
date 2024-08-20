@@ -71,6 +71,9 @@ export default function Header() {
                                 <DropdownMenuItem asChild><Link href="/home">Home</Link></DropdownMenuItem>
                                 <DropdownMenuItem asChild><Link href="/settings">Settings</Link></DropdownMenuItem>
                                 <DropdownMenuItem asChild><Link href="/historical">Historical</Link></DropdownMenuItem>
+                                {isAdmin && (
+                                    <DropdownMenuItem asChild><Link href="/admin">Admin</Link></DropdownMenuItem>
+                                )}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
