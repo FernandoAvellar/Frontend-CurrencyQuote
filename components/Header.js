@@ -50,11 +50,11 @@ export default function Header() {
             {user && (
                 <nav className="flex items-center">
                     <div className='hidden sm:flex'>
-                        <Link className='p-2' href="/home">Home</Link>
-                        <Link className='p-2' href="/settings">Settings</Link>
-                        <Link className="p-2" href="/historical">Historical</Link>
+                        <Link className='p-2 font-semibold tracking-wide underline' href="/home">Home</Link>
+                        <Link className='p-2 font-semibold tracking-wide underline' href="/settings">Settings</Link>
+                        <Link className="p-2 font-semibold tracking-wide underline" href="/historical">Historical</Link>
                         {isAdmin && (
-                            <Link className="p-2" href="/admin">Admin</Link>
+                            <Link className="p-2 font-semibold tracking-wide underline" href="/admin">Admin</Link>
                         )}
                     </div>
                     <div className='sm:hidden'>
@@ -62,17 +62,17 @@ export default function Header() {
                             <DropdownMenuTrigger>
                                 <Image
                                     src="/burger-menu.svg"
-                                    width={30}
-                                    height={30}
+                                    width={35}
+                                    height={35}
                                     alt="Picture of the author"
                                 />
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem asChild><Link href="/home">Home</Link></DropdownMenuItem>
-                                <DropdownMenuItem asChild><Link href="/settings">Settings</Link></DropdownMenuItem>
-                                <DropdownMenuItem asChild><Link href="/historical">Historical</Link></DropdownMenuItem>
+                            <DropdownMenuContent className='p-2'>
+                                <DropdownMenuItem asChild className='font-medium text-lg justify-center'><Link href="/home">Home</Link></DropdownMenuItem>
+                                <DropdownMenuItem asChild className='font-medium text-lg justify-center'><Link href="/settings">Settings</Link></DropdownMenuItem>
+                                <DropdownMenuItem asChild className='font-medium text-lg justify-center'><Link href="/historical">Historical</Link></DropdownMenuItem>
                                 {isAdmin && (
-                                    <DropdownMenuItem asChild><Link href="/admin">Admin</Link></DropdownMenuItem>
+                                    <DropdownMenuItem asChild className='font-medium text-lg justify-center'><Link href="/admin">Admin</Link></DropdownMenuItem>
                                 )}
                             </DropdownMenuContent>
                         </DropdownMenu>
