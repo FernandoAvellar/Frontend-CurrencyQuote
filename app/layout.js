@@ -2,9 +2,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { AuthProvider } from '@/context/AuthContext';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,11 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <AuthProvider>
           <Header />
-          <ToastContainer position="top-center" autoClose={2000} theme="colored" />
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            theme="colored"
+          />
           {children}
           <Footer />
         </AuthProvider>
